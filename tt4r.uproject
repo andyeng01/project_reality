@@ -16,16 +16,8 @@
       "Enabled": true
     },
     {
-      "Name": "RiderLink",
-      "Enabled": false
-    },
-    {
-      "Name": "RiderSourceCodeAccess",
-      "Enabled": false
-    },
-    {
       "Name": "VisualStudioTools",
-      "Enabled": true,
+      "Enabled": false,
       "SupportedTargetPlatforms": [
         "Win64"
       ]
