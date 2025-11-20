@@ -21,6 +21,13 @@ public:
 	// Sets default values for this character's properties
 	Aproto_character();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gun")
+	class Aproto_gun* proto_gun;
+
+	void SpawnGun();
+
+	void FireWeapon();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -40,6 +47,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enhanced Input")
 	UInputAction* SprintAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enhanced Input")
+	UInputAction* FireAction;
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);

@@ -6,10 +6,13 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/InputComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Engine/World.h"
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+
+#include "proto_gun.h"
 
 // Sets default values
 Aproto_character::Aproto_character()
@@ -33,9 +36,10 @@ Aproto_character::Aproto_character()
 	bUseControllerRotationRoll = false;
 
 	// character movement
-	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 360.f, 0.f);
-	GetCharacterMovement()->JumpZVelocity = 450.f;
+	GetCharacterMovement()->JumpZVelocity = 500.f;
 	GetCharacterMovement()->AirControl = 0.2f;
 	GetCharacterMovement()->GravityScale = 1.f;
 
@@ -61,13 +65,14 @@ void Aproto_character::BeginPlay()
 			Subsystem->AddMappingContext(InputMappingContext, 0);
 		}
 	}
+
+	SpawnGun();
 }
 
 // Called every frame
 void Aproto_character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
@@ -85,6 +90,7 @@ void Aproto_character::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &Aproto_character::StopJumping);
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &Aproto_character::StartSprint);
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &Aproto_character::StopSprint);
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &Aproto_character::FireWeapon);
 	}
 }
 
@@ -115,6 +121,14 @@ void Aproto_character::Look(const FInputActionValue& Value)
 	{
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+
+		if (GetMesh())
+		{
+			FRotator ControllerYaw = Controller->GetControlRotation();
+			ControllerYaw.Pitch = 0;  // Keep mech level
+			ControllerYaw.Roll = 0;   // Keep mech level
+			GetMesh()->SetWorldRotation(ControllerYaw);
+		}
 	}
 }
 
@@ -150,5 +164,32 @@ void Aproto_character::StopSprint(const FInputActionValue& Value)
 void Aproto_character::Die()
 {
 
+}
+
+void Aproto_character::SpawnGun()
+{
+	// first check if the player does not already have a gun
+	if (!proto_gun)
+	{
+		// spawns the actor into the world and assigns it to the proto_gun class
+		proto_gun = GetWorld()->SpawnActor<Aproto_gun>(Aproto_gun::StaticClass());
+
+		// checks if assignment was successful
+		if (proto_gun)
+		{
+			// attach the gun to the player character at the right hand socket
+			// TODO: create right hand socket for weapon
+			proto_gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("hand_rSocket"));
+			proto_gun->SetOwner(this);
+		}
+	}
+}
+
+void Aproto_character::FireWeapon()
+{
+	if (proto_gun)
+	{
+		proto_gun->Fire();
+	}
 }
 
