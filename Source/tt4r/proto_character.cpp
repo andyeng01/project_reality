@@ -175,21 +175,32 @@ void Aproto_character::SpawnGun()
 		proto_gun = GetWorld()->SpawnActor<Aproto_gun>(Aproto_gun::StaticClass());
 
 		// checks if assignment was successful
-		if (proto_gun)
+		if (proto_gun && proto_camera_comp)
 		{
 			// attach the gun to the player character at the right hand socket
 			// TODO: create right hand socket for weapon
-			proto_gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("hand_rSocket"));
+			proto_gun->AttachToComponent(proto_camera_comp, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
+			proto_gun->SetActorRelativeLocation(FVector(30.f, 20.f, -10.f));
+			proto_gun->SetActorRelativeRotation(FRotator(0.f, 0.f, 0.f));
+
 			proto_gun->SetOwner(this);
+
+			UE_LOG(LogTemp, Warning, TEXT("gun attached to player camera"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("failed to spawn gun. check camera"));
 		}
 	}
 }
 
-void Aproto_character::FireWeapon()
+void Aproto_character::FireWeapon(const FInputActionValue& Value)
 {
 	if (proto_gun)
 	{
 		proto_gun->Fire();
+		UE_LOG(LogTemp, Warning, TEXT("weapon fired"));
 	}
 }
 

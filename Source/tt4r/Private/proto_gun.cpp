@@ -1,7 +1,7 @@
 #include "proto_gun.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/World.h"
-include "GameFramework/Pawn.h"
+#include "GameFramework/Pawn.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
@@ -34,15 +34,24 @@ void Aproto_gun::Fire()
 {
 	// Get the current world, which allows us to spawn actors and perform raycasts. We also need world.time and tick functions
 	UWorld* World = GetWorld();
-	if (!World) return;
+	if (!World) {
+		UE_LOG(LogTemp, Error, TEXT("gun failed at get world"));
+		return;
+	}
 
 	// check for valid owner pawn
 	APawn* OwnerPawn = Cast<APawn>(GetOwner());
-	if (!OwnerPawn) return;
+	if (!OwnerPawn) {
+		UE_LOG(LogTemp, Error, TEXT("gun failed at owner pawn"));
+		return;
+	}
 
 	// check for valid player controller, so we can get player's camera viewpoint
 	APlayerController* PlayerController = Cast<APlayerController>(OwnerPawn->GetController());
-	if (!PlayerController) return;
+	if (!PlayerController) {
+		UE_LOG(LogTemp, Error, TEXT("gun failed at player controller"));
+		return;
+	}
 
 	// get camera location and rotation from player controller
 	FVector CameraLocation;

@@ -26,7 +26,7 @@ public:
 
 	void SpawnGun();
 
-	void FireWeapon();
+	void FireWeapon(const FInputActionValue& Value);
 
 protected:
 	// Called when the game starts or when spawned
