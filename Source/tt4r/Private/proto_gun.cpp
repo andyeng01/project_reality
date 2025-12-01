@@ -1,9 +1,9 @@
 #include "proto_gun.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/World.h"
-// include "GameFramework/Pawn.h"
+include "GameFramework/Pawn.h"
 #include "GameFramework/PlayerController.h"
-// #include "Kismet/GameplayStatics.h"
+#include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
 
 Aproto_gun::Aproto_gun()
