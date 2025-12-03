@@ -15,7 +15,7 @@ Aproto_gun::Aproto_gun()
 	GunMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("GunMesh"));
 	GunMesh->SetupAttachment(RootComponent);
 
-	MuzzleOffset = FVector(100.f, 0.f, 10.f);
+	MuzzleOffset = FVector(0.f, 0.f, 0.f);
 }
 
 void Aproto_gun::BeginPlay()
