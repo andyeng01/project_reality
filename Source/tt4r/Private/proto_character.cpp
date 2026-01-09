@@ -49,6 +49,9 @@ Aproto_character::Aproto_character()
 	bIsSprinting = false;
 	DefaultMaxWalkSpeed = WalkSpeed;
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+
+	// general stats
+	protoHitPoints = 250.f;
 }
 
 
@@ -161,9 +164,9 @@ void Aproto_character::StopSprint(const FInputActionValue& Value)
 	}
 }
 
-void Aproto_character::Die()
+void Aproto_character::ApplyHealthChange(float ChangeValue, bool Sign)
 {
-
+	
 }
 
 void Aproto_character::SpawnGun()
@@ -177,11 +180,11 @@ void Aproto_character::SpawnGun()
 		// checks if assignment was successful
 		if (proto_gun && proto_camera_comp)
 		{
-			// attach the gun to the player character at the right hand socket
+			// attach the gun to the player camera
 			// TODO: create right hand socket for weapon
 			proto_gun->AttachToComponent(proto_camera_comp, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
-			proto_gun->SetActorRelativeLocation(FVector(30.f, 20.f, -10.f));
+			proto_gun->SetActorRelativeLocation(FVector(-50.f, 0.f, 0.f));
 			proto_gun->SetActorRelativeRotation(FRotator(0.f, 0.f, 0.f));
 
 			proto_gun->SetOwner(this);

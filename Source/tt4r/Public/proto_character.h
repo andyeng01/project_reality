@@ -57,7 +57,7 @@ protected:
 	void StopJump(const FInputActionValue& Value);
 	void StartSprint(const FInputActionValue& Value);
 	void StopSprint(const FInputActionValue& Value);
-	void Die();
+	void ApplyHealthChange(float ChangeValue, bool Sign);
 
 	// components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
@@ -65,7 +65,7 @@ protected:
 
 	// character variables
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Properties")
-	float proto_hp;
+	float protoHitPoints;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Properties")
 	float SprintSpeedMultiplier;

@@ -78,12 +78,12 @@ void Aproto_gun::Fire()
 	);
 
 	// draw the debug line (lifetime 2, layer 0, thickness 1)
-	DrawDebugLine(World, MuzzleLocation, EndTrace, FColor::Cyan, false, 2.f, 0, 1.f);
+	DrawDebugLine(World, MuzzleLocation, EndTrace, FColor::Cyan, false, 2.f, 0, 0.25f);
 
 	// handle hit event
 	if (bHit)
 	{
-		DrawDebugPoint(World, HitResult.Location, 10.f, FColor::Red, false, 2.f);
+		DrawDebugPoint(World, HitResult.Location, 5.f, FColor::Red, false, 2.f);
 	}
 }
 
